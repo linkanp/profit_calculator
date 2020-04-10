@@ -16,19 +16,27 @@ margin of all sales was €24 + €36 = €60.
 The remaining 6 gnomes are not included in the calculations as they have not been sold yet.
 
 ## Installation
-Run the composer install command from the project root directory.
+After cloning the repo in your local, Run the composer install and yarn install command from the project root directory.
+
 `composer install`
+
 `yarn install`
 
 ## Database Setup
 Modify the DB connection information as per your local DB server. Update the [db_username] and [password] in the line below in .env file.
+
 `DATABASE_URL=mysql://[db_username]:[password]@127.0.0.1:3306/profit_calculator?serverVersion=5.7`
-Then run the following command,
+
+Then run the following command to create the DB 'profit_calculator' and tables in your local DB server.
+
 `php bin/console doctrine:database:create`
+
 `php bin/console doctrine:migrations:migrate`
 
 ## Run the Project
+
 `symfony server:start`
+
 Browse the project from http://127.0.0.1:8000
 
 ### Cheers!!
