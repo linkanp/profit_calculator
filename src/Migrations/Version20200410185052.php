@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200410162446 extends AbstractMigration
+final class Version20200410185052 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,8 @@ final class Version20200410162446 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE buy DROP batch');
-        $this->addSql('ALTER TABLE sale CHANGE buy_id buy_id INT NOT NULL');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_E54BC0054AFB9379 ON sale (buy_id)');
+        $this->addSql('CREATE TABLE buy (id INT AUTO_INCREMENT NOT NULL, item VARCHAR(255) NOT NULL, quantity INT NOT NULL, price INT NOT NULL, stock INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE sale (id INT AUTO_INCREMENT NOT NULL, item VARCHAR(255) NOT NULL, buy_id INT NOT NULL, quantity INT NOT NULL, price INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema) : void
@@ -32,8 +31,7 @@ final class Version20200410162446 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE buy ADD batch INT DEFAULT NULL');
-        $this->addSql('DROP INDEX UNIQ_E54BC0054AFB9379 ON sale');
-        $this->addSql('ALTER TABLE sale CHANGE buy_id buy_id INT DEFAULT NULL');
+        $this->addSql('DROP TABLE buy');
+        $this->addSql('DROP TABLE sale');
     }
 }
