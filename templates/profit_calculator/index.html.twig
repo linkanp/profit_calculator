@@ -1,0 +1,8 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1 class="title">Profit Calculator</h1>
+    <h3>Current Profit: {{ profit }}</h3>
+    {{ form(form) }}
+{% endblock %}

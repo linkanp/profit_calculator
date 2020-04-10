@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+profit_calculator:
+    path: /
+    controller: App\Controller\ProfitCalculator::actionCalculator
