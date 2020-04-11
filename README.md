@@ -15,6 +15,15 @@ the profit from this second sale is (€23-€17)x4 + (€23-€20)x4 = €6x4 +
 margin of all sales was €24 + €36 = €60.
 The remaining 6 gnomes are not included in the calculations as they have not been sold yet.
 
+## Technical Requirements
+1. PHP 7.2.5 or higher and these PHP extensions (which are installed and enabled by default in most PHP 7 installations): Ctype, iconv, JSON, PCRE, Session, SimpleXML, and Tokenizer;
+2. Composer, which is used to install PHP packages.
+3. Symfony CLI
+
+After Symfony CLI, you can check the technical requirements by running the following commands and then take action to fullfill all requirements. 
+
+`symfony check:requirements`
+
 ## Installation
 After cloning the repo in your local, Run the composer install and yarn install command from the project root directory.
 
@@ -41,3 +50,4 @@ Browse the project from http://127.0.0.1:8000
 
 ### Cheers!!
 
+Home page will show the current calculated profit and a form to peform Sale/Buy action. Buy action will store the data into Buy table and Sale action will store the data into Sale table and then re-calculate the profit based on new sale.

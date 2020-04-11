@@ -28,25 +28,60 @@ class CalculatorService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * Calculate profit for all buy and sale data
+     * 
+     * @return int Calculated Profit
+     * 
+     */
     public function getProfit()
     {
         return $this->saleRepository->calculateProfit();
     }
 
-    public function handleBuyAction($data)
+    /**
+     * Logic for handle Buy or Sale action 
+     * 
+     * @param string $action buy/sale action
+     * @param array $data Data to store in db
+     * 
+     */
+    public function handleAction($action, $data)
+    {
+        switch($action){
+            case 'sale':
+                $this->handleSaleAction($data);
+            break;
+            case 'buy':
+                $this->handleBuyAction($data);
+            break;     
+        } 
+    }
+    /**
+     * Handle the Buy Action to store data in DB
+     * 
+     * @param array $data Data to store in db
+     * 
+     */
+    private function handleBuyAction($data)
     {
         $entity = new Buy();
         $entity->setStock($data['quantity']);
         $entity->setItem('Test Item');
         $entity->setQuantity($data['quantity']);
         $entity->setPrice($data['price']);
-        //$errors = $this->validator->validate($entity);
     
         $this->entityManager->persist($entity);
         $this->entityManager->flush();
     }
 
-    public function handleSaleAction($data)
+    /**
+     * Handle the Sale Action - Check Available stock and FIFO Sale order
+     * 
+     * @param array $data Data to store in db
+     * @throws Exception If Sale quantity is higher than available stock
+     */
+    private function handleSaleAction($data)
     {
         if($this->buyRepository->findStock() < $data['quantity']){
             throw new Exception('Sale quantity is higher than available stock.');
@@ -71,7 +106,7 @@ class CalculatorService
         $this->entityManager->getConnection()->beginTransaction(); 
         try {
             $this->createSaleEntry($saleBatch, $data);
-            $this->updateBuyEntry($saleBatch, $data);
+            $this->updateBuyEntry($saleBatch);
             $this->entityManager->getConnection()->commit();
         } catch (Exception $e) {
             $this->entityManager->getConnection()->rollBack();
@@ -79,6 +114,12 @@ class CalculatorService
         }
     }
 
+    /**
+     * Store the sale data in DB
+     * 
+     * @param array $data Data to store in db
+     * 
+     */
     private function createSaleEntry(array $saleBatch, array $data)
     {
         if(!empty($saleBatch)){
@@ -94,7 +135,13 @@ class CalculatorService
         }
     } 
 
-    private function updateBuyEntry(array $saleBatch, array $data)
+    /**
+     * Update stock after sale
+     * 
+     * @param array $saleBatch rows that will be updated
+     * 
+     */
+    private function updateBuyEntry(array $saleBatch)
     {
         if(!empty($saleBatch)){
             foreach($saleBatch as $k => $saleItem){

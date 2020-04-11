@@ -32,20 +32,11 @@ class ProfitCalculator extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                 $data = $form->getData();
-                switch($data['action']){
-                    case 'sale':
-                        $this->calculator->handleSaleAction($data);
-                    break;
-                    case 'buy':
-                        $this->calculator->handleBuyAction($data);
-                    break;     
-                } 
+                $data = $form->getData();
+                $this->calculator->handleAction($data['action'], $data);
                 $this->addFlash('success', 'Submitted successfully.');
-                return $this->redirectToRoute('profit_calculator');
-                
+                return $this->redirectToRoute('profit_calculator');    
             } catch (Exception $e) {
-                $message = sprintf('Erro: %s', $e->getCode(), $e->getMessage());
                 $this->addFlash('error', 'Error: '.$e->getMessage());
                 return $this->redirectToRoute('profit_calculator');
             }
