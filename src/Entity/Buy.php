@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -43,6 +45,16 @@ class Buy
      * @Assert\Type("int")
      */
     private $stock;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SaleBatch", mappedBy="buy_id")
+     */
+    private $sales;
+
+    public function __construct()
+    {
+        $this->sales = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,6 +105,37 @@ class Buy
     public function setStock(int $stock): self
     {
         $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SaleBatch[]
+     */
+    public function getSales(): Collection
+    {
+        return $this->sales;
+    }
+
+    public function addSale(SaleBatch $sale): self
+    {
+        if (!$this->sales->contains($sale)) {
+            $this->sales[] = $sale;
+            $sale->setBuyId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSale(SaleBatch $sale): self
+    {
+        if ($this->sales->contains($sale)) {
+            $this->sales->removeElement($sale);
+            // set the owning side to null (unless already changed)
+            if ($sale->getBuyId() === $this) {
+                $sale->setBuyId(null);
+            }
+        }
 
         return $this;
     }

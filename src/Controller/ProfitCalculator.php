@@ -35,15 +35,14 @@ class ProfitCalculator extends AbstractController
                 $data = $form->getData();
                 $this->calculator->handleAction($data['action'], $data);
                 $this->addFlash('success', 'Submitted successfully.');
-                return $this->redirectToRoute('profit_calculator');    
+                return $this->redirectToRoute('profit_calculator');
             } catch (Exception $e) {
                 $this->addFlash('error', 'Error: '.$e->getMessage());
                 return $this->redirectToRoute('profit_calculator');
             }
-        }      
+        }
         
         $profit = $this->calculator->getProfit();
-
         return $this->render('profit_calculator/index.html.twig', [
             'profit' => $profit,
             'form' => $form->createView(),

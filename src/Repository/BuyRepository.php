@@ -28,7 +28,7 @@ class BuyRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('b')
             ->andWhere('b.stock > :val')
-            ->setParameter('val',0)
+            ->setParameter('val', 0)
             ->orderBy('b.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
@@ -37,7 +37,7 @@ class BuyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return int $stock Returns an array with of stock count 
+     * @return int $stock Returns an array with of stock count
      */
     
     public function findStock(): int
