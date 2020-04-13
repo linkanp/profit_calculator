@@ -51,3 +51,8 @@ Browse the project from http://127.0.0.1:8000
 ### Cheers!!
 
 Home page will show the current calculated profit and a form to peform Sale/Buy action. Buy action will store the data into Buy table and Sale action will store the data into Sale table and then re-calculate the profit based on new sale.
+
+## Testing
+Run the following command to execute the testing script.
+
+`php bin/phpunit tests/`
